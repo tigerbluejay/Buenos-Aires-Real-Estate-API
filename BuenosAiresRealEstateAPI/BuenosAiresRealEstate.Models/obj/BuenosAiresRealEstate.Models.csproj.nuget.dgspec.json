@@ -1,32 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\josem\\source\\Large Projects\\Magic Villa API - Expose and Consume\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj": {}
+    "C:\\Users\\josem\\source\\Large Projects\\Buenos Aires Real Estate API - Expose\\Buenos Aires Real Estate API\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj": {}
   },
   "projects": {
-    "C:\\Users\\josem\\source\\Large Projects\\Magic Villa API - Expose and Consume\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj": {
+    "C:\\Users\\josem\\source\\Large Projects\\Buenos Aires Real Estate API - Expose\\Buenos Aires Real Estate API\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\josem\\source\\Large Projects\\Magic Villa API - Expose and Consume\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj",
+        "projectUniqueName": "C:\\Users\\josem\\source\\Large Projects\\Buenos Aires Real Estate API - Expose\\Buenos Aires Real Estate API\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj",
         "projectName": "BuenosAiresRealEstate.Models",
-        "projectPath": "C:\\Users\\josem\\source\\Large Projects\\Magic Villa API - Expose and Consume\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj",
+        "projectPath": "C:\\Users\\josem\\source\\Large Projects\\Buenos Aires Real Estate API - Expose\\Buenos Aires Real Estate API\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj",
         "packagesPath": "C:\\Users\\josem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\josem\\source\\Large Projects\\Magic Villa API - Expose and Consume\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\obj\\",
+        "outputPath": "C:\\Users\\josem\\source\\Large Projects\\Buenos Aires Real Estate API - Expose\\Buenos Aires Real Estate API\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\josem\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0"
+          "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {}
           }
         },
@@ -37,8 +37,8 @@
         }
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net7.0": {
+          "targetAlias": "net7.0",
           "imports": [
             "net461",
             "net462",

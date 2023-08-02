@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ak2VkkD2HarNQQxGQqtLUiuoykpjh0RvvBD1jZnUj0oE9dluO6G8cqDC07+Ed/ny6udzHQJHsp+lpZSOyBpQLg==",
+  "dgSpecHash": "kFmeVOz/K4Coj4AFVk/JOikkJ7rDolIU8dPN3UghEN9RlzEYVnXqAzA2jYGaHQMBizN60QgAz2HJ3iBTA4iwBQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\josem\\source\\Large Projects\\Magic Villa API - Expose and Consume\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.Models.csproj",
+  "projectFilePath": "C:\\Users\\josem\\source\\Large Projects\\Buenos Aires Real Estate API - Expose\\Buenos Aires Real Estate API\\BuenosAiresRealEstateAPI\\BuenosAiresRealEstate.Models\\BuenosAiresRealEstate.API.Models.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
