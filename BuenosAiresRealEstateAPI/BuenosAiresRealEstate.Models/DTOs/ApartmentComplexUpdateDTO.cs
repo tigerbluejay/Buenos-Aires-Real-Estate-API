@@ -16,7 +16,7 @@ namespace BuenosAiresRealEstate.API.Models.DTOs
         [Required]
         [MaxLength(40)]
         public string Address { get; set; }
-        public string[] Amenities { get; set; }
+        public string Amenities { get; set; }
         public string Owner { get; set; }
         public string ImageUrl { get; set; }
     }

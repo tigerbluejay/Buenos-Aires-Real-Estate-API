@@ -16,7 +16,7 @@ namespace BuenosAiresRealEstate.API.Models.Models
         public string ComplexName { get; set; }
         [Required]
         public string Address { get; set; }
-        public string[] Amenities { get; set; }
+        public string Amenities { get; set; }
         public string Owner { get; set; }
         public string ImageUrl { get; set; }
         public DateTime CreatedDate { get; set; }

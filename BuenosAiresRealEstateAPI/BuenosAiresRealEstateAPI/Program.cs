@@ -1,3 +1,5 @@
+using BuenosAiresRealEstate.API.Data;
+using BuenosAiresRealEstate.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,20 +9,22 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Collections.Generic;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 /******* Add Database *******/
-//builder.Services.AddDbContext<ApplicationDbContext>(option =>
-//{
-//    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
-//});
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
 
 /******* Add .NET Default Identity Configurations *******/
-// ApplicationUser is a custom class that inherits from IdentityUser
-//builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+//ApplicationUser is a custom class that inherits from IdentityUser
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 /******* Add Caching *******/
 //builder.Services.AddResponseCaching();
@@ -126,7 +130,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
