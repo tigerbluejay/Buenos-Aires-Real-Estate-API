@@ -11,6 +11,10 @@ using System.Collections.Generic;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using BuenosAiresRealEstate.API;
+using BuenosAiresRealEstate.API.Utilities;
+using BuenosAiresRealEstate.API.RepositoryInterfaces;
+using BuenosAiresRealEstate.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,38 +31,53 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 /******* Add Caching *******/
-//builder.Services.AddResponseCaching();
+builder.Services.AddResponseCaching();
 
 /******* Add Repository *******/
-//builder.Services.AddScoped<IVillaRepository, VillaRepository>();
-//builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
-//builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IApartmentComplexRepository, ApartmentComplexRepository>();
+builder.Services.AddScoped<IApartmentUnitRepository, ApartmentUnitRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+/*
+When you use AddScoped, a new instance of the service is created for each HTTP request. 
+The same instance is then reused throughout the entire request processing pipeline. This means that 
+all the classes within a single HTTP request will get the same instance of the service. Once the 
+request ends, the scoped instances are disposed of.
+
+When you use AddSingleton, a single instance of the service is created and shared across the 
+entire application's lifetime. It means that the same instance of the service will be used for 
+all requests. If you have multiple HTTP requests, they will all use the same instance of the service.
+
+With AddTransient, a new instance of the service is created every time it is requested. 
+This means that different classes within the same request or different requests will receive 
+different instances of the service.
+*/
 
 /******* Add AutoMapper *******/
 /** Add support for converting DTOS to Models **/
-//builder.Services.AddAutoMapper(typeof(MappingConfig));
+builder.Services.AddAutoMapper(typeof(Mapping));
 
 /******* Add Versioning Services *******/
-//builder.Services.AddApiVersioning(options =>
-//{
-//    options.AssumeDefaultVersionWhenUnspecified = true;
-//    options.DefaultApiVersion = new ApiVersion(1, 0);
-//    options.ReportApiVersions = true; // in the response header we'll get the api version supported
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true; // in the response header we'll get the api version supported
 
-//});
-//builder.Services.AddVersionedApiExplorer(options =>
-//{
-//    options.GroupNameFormat = "'v'VVV";
-//    options.SubstituteApiVersionInUrl = true; // substitutes to v1 in most urls in swagger (and the url more generally)
-//});
+});
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true; // substitutes to v1 in most urls in swagger (and the url more generally)
+});
 
 /******* Serilog Logging *******/
-//// Configure Serilog
-//Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
-//    .WriteTo.File("log/villaLogs.txt", rollingInterval: RollingInterval.Infinite)
-//    .CreateLogger();
-//// Tell .NET to use Serilog - this comes with the Serilog.ASPNETCore package
-//builder.Host.UseSerilog();
+// Configure Serilog
+Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
+    .WriteTo.File("Logs/ApartmentComplexLogs.txt", rollingInterval: RollingInterval.Infinite)
+    .CreateLogger();
+// Tell .NET to use Serilog - this comes with the Serilog.ASPNETCore package
+builder.Host.UseSerilog();
 
 /**** Here in AddControllers parenthesis we can add the cache profile ****/
 builder.Services.AddControllers(option =>

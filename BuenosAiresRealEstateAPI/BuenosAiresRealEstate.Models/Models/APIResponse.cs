@@ -20,7 +20,7 @@ namespace BuenosAiresRealEstate.API.Models.Models
         public APIResponse() 
         {
             Errors = new List<string>();
-            IsSuccess = false;
+            IsSuccess = true;
 
         }
     }

@@ -8,7 +8,7 @@ namespace BuenosAiresRealEstate.API.Models.Identity_DTOs
 {
     // we have a registration request DTO but not a registration response DTO
     // this is because we just send them a 200 OK response if registration is successful
-    internal class RegistrationRequestDTO
+    public class RegistrationRequestDTO
     {
         public string UserName { get; set; }
         public string Name { get; set; }

@@ -1715,6 +1715,12 @@
       "BuenosAiresRealEstate.API.Utilities/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "AutoMapper": "12.0.1",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "BuenosAiresRealEstate.API.Data": "1.0.0",
+          "BuenosAiresRealEstate.API.Models": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/BuenosAiresRealEstate.API.Utilities.dll": {}
         },

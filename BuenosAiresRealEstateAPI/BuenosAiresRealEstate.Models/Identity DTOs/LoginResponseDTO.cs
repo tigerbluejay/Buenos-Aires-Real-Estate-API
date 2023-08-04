@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuenosAiresRealEstate.API.Models.Identity_DTOs
 {
-    internal class LoginResponseDTO
+    public class LoginResponseDTO
     {
         // user will have all the details of the loggedIn User
         public UserDTO User { get; set; }

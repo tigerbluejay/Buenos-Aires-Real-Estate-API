@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BuenosAiresRealEstate.API.Models.DTOs
 {
-    internal class ApartmentUnitUpdateDTO
+    public class ApartmentUnitUpdateDTO
     {
         [Required]
         public string ApartmentUnitId { get; set; }
