@@ -27,7 +27,7 @@ namespace BuenosAiresRealEstate.API.Models.Models
         public DateTime UpdateDate { get; set; }
 
 
-        [ForeignKey("Apartment Complex ID")] // this will be the FK referencing the Apartment Complex
+        [ForeignKey("ApartmentComplex")] // this will be the FK referencing the Apartment Complex
         public int ApartmentComplexId { get; set; }
         public ApartmentComplex ApartmentComplex { get; set; } // this is the navigation property
 

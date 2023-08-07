@@ -20,7 +20,6 @@ namespace BuenosAiresRealEstate.API.Models.DTOs
 
         [Required]
         public int ApartmentComplexId { get; set; }
-        public ApartmentComplex ApartmentComplex { get; set; }
 
     }
 }

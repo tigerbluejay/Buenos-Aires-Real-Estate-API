@@ -37,8 +37,10 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+
         [ResponseCache(CacheProfileName = "Default30")]
         public async Task<ActionResult<APIResponse>> GetApartmentComplexes(
             [FromQuery(Name = "filterComplexName")] string? complexName,
@@ -48,6 +50,14 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
 
             try
             {
+                // Input validation for pageSize and pageNumber
+                if (pageSize <= 0 || pageNumber <= 0)
+                {
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "Invalid pageSize or pageNumber." };
+                    return BadRequest(_response);
+                }
+
                 IEnumerable<ApartmentComplex> apartmentComplexList;
 
                 // if we receive complexName parameter
@@ -106,8 +116,6 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ResponseCache(Duration = 30)] // 30 seconds cache. one 30 second cache per id passed in a request
         public async Task<ActionResult<APIResponse>> GetApartmentComplex(int id)
         {
@@ -115,24 +123,31 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
             {
                 if (id == 0)
                 {
-                    _logger.LogError("Could Not Get Villa");
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(_response);
+                    if (id <= 0)
+                    {
+                        _logger.LogError("Invalid ApartmentComplex Id.");
+                        _response.IsSuccess = false;
+                        _response.Errors = new List<string> { "Invalid ApartmentComplex Id." };
+                        _response.StatusCode = HttpStatusCode.BadRequest;
+                        return BadRequest(_response);
+                    }
                 }
 
                 var apartmentComplex = await _dbApartmentComplex.GetAsync(u => u.Id == id);
 
                 if (apartmentComplex == null)
                 {
-                    _logger.LogError("Could Not Get Villa, Villa was Not Found");
-                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _logger.LogError("ApartmentComplex with Id " + id + " was not found.");
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "ApartmentComplex not found." };
                     return NotFound(_response);
                 }
 
-                _logger.LogInformation("Returning Villa with Id" + id);
+                _logger.LogInformation("Returning ApartmentComplex with Id " + id);
                 _response.Result = _mapper.Map<ApartmentComplexDTO>(apartmentComplex);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
+
             }
             catch (Exception ex)
             {
@@ -144,10 +159,12 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
 
         }
 
-        /*** FOR CREATE APARTMENT COMPLEX, WE MUST REMOVE THE ID FIELD FOR IT WILL BE ASSIGNED AUTOMATICALLY ***/
+        /*** FOR CREATE APARTMENT COMPLEX, IN THE SWAGGER UI WE MUST REMOVE THE ID FIELD FOR IT WILL BE ASSIGNED AUTOMATICALLY ***/
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //[Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
         public async Task<ActionResult<APIResponse>> CreateApartmentComplex(
@@ -155,28 +172,33 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         {
             try
             {
-                ApartmentComplex apartmentComplexIsUnique;
-
-                // here we try to find if the complex name the user entered already exists in db
-                apartmentComplexIsUnique = await _dbApartmentComplex.GetAsync(
-                    u => u.ComplexName.ToLower() == apartmentComplexCreateDTO.ComplexName.ToLower());
-
-                // if it is not unique, the apartment complex exists already
-                if (apartmentComplexIsUnique != null)
-                {
-                    _logger.LogError("Trying to Create an Apartement Complex that already Exists. Error!");
-                    ModelState.AddModelError("ErrorMessages", "Apartment Complex Already Exists");
-                    return BadRequest(ModelState);
-                }
-
+                // Input validation
                 if (apartmentComplexCreateDTO == null)
                 {
                     _logger.LogError("Must Provide Information to Create Apartment Complex");
-                    return BadRequest(apartmentComplexCreateDTO);
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "Must Provide Information to Create Apartment Complex." };
+                    return BadRequest(_response);
+                }
+
+                ApartmentComplex apartmentComplexExists;
+
+                // here we try to find if the complex name the user entered already exists in db
+                apartmentComplexExists = await _dbApartmentComplex.GetAsync(
+                    u => u.ComplexName.ToLower() == apartmentComplexCreateDTO.ComplexName.ToLower());
+
+                // if it is not unique, the apartment complex exists already
+                if (apartmentComplexExists != null)
+                {
+                    _logger.LogError("Trying to Create an Apartment Complex that already exists. Error!");
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "Apartment Complex Already Exists." };
+                    //ModelState.AddModelError("ErrorMessages", "Apartment Complex Already Exists");
+                    //return BadRequest(ModelState);
+                    return BadRequest(_response);
                 }
 
                 ApartmentComplex apartmentComplex = _mapper.Map<ApartmentComplex>(apartmentComplexCreateDTO);
-
                 await _dbApartmentComplex.CreateAsync(apartmentComplex);
 
                 _logger.LogInformation("Created Apartment Complex");
@@ -200,35 +222,38 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         //[Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
         public async Task<ActionResult<APIResponse>> DeleteApartmentComplex(int id)
         {
             try
             {
-                if (id == 0)
+                if (id <= 0)
                 {
-                    _logger.LogError("Could Not Delete Villa with Id '0'");
-                    return BadRequest();
+                    _logger.LogError("Invalid ApartmentComplex Id.");
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "Invalid ApartmentComplex Id." };
+                    return BadRequest(_response);
                 }
 
                 var apartmentComplex = await _dbApartmentComplex.GetAsync(u => u.Id == id);
 
                 if (apartmentComplex == null)
                 {
-                    _logger.LogError("Could Not Find a Villa with that Id to Delete");
-                    return NotFound();
+                    _logger.LogError("ApartmentComplex with Id " + id + " was not found.");
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "ApartmentComplex not found." };
+                    return NotFound(_response);
                 }
 
                 await _dbApartmentComplex.RemoveAsync(apartmentComplex);
 
-                _logger.LogInformation("Removed Operation Performed");
+                _logger.LogInformation("ApartmentComplex with Id " + id + " deleted successfully.");
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
-                return Ok(_response);
-                //return NoContent(); // typically when we delete we don't return anything
+                return NoContent(); // typically when we delete, we don't return anything
 
             }
             catch (Exception ex)
@@ -244,6 +269,9 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [HttpPut("{id:int}", Name = "UpdateApartmentComplex")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         //[Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
         public async Task<ActionResult<APIResponse>> UpdateApartmentComplex(int id, 
             [FromBody] ApartmentComplexUpdateDTO apartmentComplexUpdateDTO)
@@ -253,15 +281,31 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
                 // if we receive no object as parameter
                 // or if the id we receive does not match the id of the object we receive
                 // - so we should populate id and the object with the same id on the Request
+                // Input validation
                 if (apartmentComplexUpdateDTO == null || id != apartmentComplexUpdateDTO.Id)
                 {
-                    _logger.LogError("Error. No information received or Id Mismatch");
-                    return BadRequest();
+                    _logger.LogError("Error. No information received or Id Mismatch.");
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "Invalid data or Id Mismatch." };
+                    return BadRequest(_response);
                 }
 
-                ApartmentComplex apartmentComplex = _mapper.Map<ApartmentComplex>(apartmentComplexUpdateDTO);
+                // Check if the apartment complex exists in the database
+                var existingComplex = await _dbApartmentComplex.GetAsync(u => u.Id == id);
 
-                await _dbApartmentComplex.UpdateAsync(apartmentComplex);
+                if (existingComplex == null)
+                {
+                    _logger.LogError("ApartmentComplex with Id " + id + " was not found.");
+                    _response.IsSuccess = false;
+                    _response.Errors = new List<string> { "ApartmentComplex not found." };
+                    return NotFound(_response);
+                }
+
+
+                // Update the existing apartment complex with data from the DTO
+                _mapper.Map(apartmentComplexUpdateDTO, existingComplex);
+
+                await _dbApartmentComplex.UpdateAsync(existingComplex);
 
                 _logger.LogInformation("Apartment Complex Information Updated");
                 _response.StatusCode = HttpStatusCode.NoContent;
