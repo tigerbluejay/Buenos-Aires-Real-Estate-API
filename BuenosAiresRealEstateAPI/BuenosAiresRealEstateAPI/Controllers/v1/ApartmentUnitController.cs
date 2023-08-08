@@ -110,7 +110,7 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> CreateApartmentUnit(
             [FromBody] ApartmentUnitCreateDTO apartmentUnitCreateDTO)
         {
@@ -161,7 +161,7 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> DeleteApartmentUnit(string id)
         {
             try
@@ -207,7 +207,7 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> UpdateApartmentUnit(string id,
             [FromBody] ApartmentUnitUpdateDTO apartmentUnitUpdateDTO)
         {

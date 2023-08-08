@@ -166,7 +166,7 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
+        [Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
         public async Task<ActionResult<APIResponse>> CreateApartmentComplex(
             [FromBody] ApartmentComplexCreateDTO apartmentComplexCreateDTO)
         {
@@ -225,7 +225,7 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
+        [Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
         public async Task<ActionResult<APIResponse>> DeleteApartmentComplex(int id)
         {
             try
@@ -272,7 +272,7 @@ namespace BuenosAiresRealEstate.API.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
+        [Authorize(Roles = "admin")] // only authorized users with the Role of admin can access this endpoint.
         public async Task<ActionResult<APIResponse>> UpdateApartmentComplex(int id, 
             [FromBody] ApartmentComplexUpdateDTO apartmentComplexUpdateDTO)
         {
