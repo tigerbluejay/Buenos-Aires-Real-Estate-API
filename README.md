@@ -1,6 +1,6 @@
 # Buenos-Aires-Real-Estate-API
 
-A real state API service exposing Apartment Unit Rental Information in the City of Buenos Aires.
+The Buenos Aires Real Estate API is a RESTful web service built to manage, query, and serve real estate property data within the Buenos Aires region. Designed with scalability and clean architecture in mind, it provides a robust backend foundation suitable for integration with front-end applications or data-driven services. This project is ideal for developers looking to understand or contribute to modern API development using the latest .NET ecosystem tools.The Buenos Aires Real Estate API is a RESTful web service built to manage, query, and serve real estate property data within the Buenos Aires region. Designed with scalability and clean architecture in mind, it provides a robust backend foundation suitable for integration with front-end applications or data-driven services. This project is ideal for developers looking to understand or contribute to modern API development using the latest .NET ecosystem tools.
 
 ## Project Structure
 
